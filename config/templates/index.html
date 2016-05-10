@@ -14,14 +14,12 @@ along with this program; if not, write to Talend SA
 -->
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Talend frontend project seed</title>  <!-- TODO: change this title -->
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+    <title><%= htmlWebpackPlugin.options.title %></title>
 </head>
 <body>
-    <app></app>
-
-    <script src="app.js"></script>
+    <<%= htmlWebpackPlugin.options.rootElement %>></<%= htmlWebpackPlugin.options.rootElement %>>
 </body>
 </html>

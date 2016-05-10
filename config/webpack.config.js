@@ -1,29 +1,16 @@
+var appConf = require('./app.conf.js');
+var getLicence = require('./licence');
+
 var path = require('path');
 var webpack = require('webpack');
-var _ = require('lodash');
 
-function getLicence() {
-    var licenceTemplate = _.template(
-        '============================================================================\n' +
-        '\n' +
-        ' Copyright (C) 2006-<%= year %> Talend Inc. - www.talend.com\n' +
-        '\n' +
-        ' This source code is available under agreement available at\n' +
-        ' https://github.com/Talend/data-prep/blob/master/LICENSE\n' +
-        '\n' +
-        ' You should have received a copy of the agreement\n' +
-        ' along with this program; if not, write to Talend SA\n' +
-        ' 9 rue Pages 92150 Suresnes, France\n' +
-        '\n' +
-        ' ============================================================================');
-    return licenceTemplate({year: new Date().getFullYear()});
-}
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 function getDefaultConfig(options) {
     return {
-        entry: path.resolve(__dirname, './src/app/index.js'),
+        entry: path.resolve(__dirname, '../src/app/index.js'),
         output: {
-            path: path.resolve(__dirname, './build'),
+            path: path.resolve(__dirname, '../build'),
             filename: 'app.js'
         },
         module: {
@@ -34,7 +21,12 @@ function getDefaultConfig(options) {
             ]
         },
         plugins: [
-            new webpack.BannerPlugin(getLicence())
+            new webpack.BannerPlugin(getLicence()),
+            new HtmlWebpackPlugin({
+                title: appConf.title,
+                rootElement: appConf.appName,
+                template: 'config/templates/index.html'
+            })
         ],
         babel: {
             presets: ['es2015']
