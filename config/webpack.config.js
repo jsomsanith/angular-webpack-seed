@@ -1,16 +1,22 @@
-var appConf = require('./app.conf.js');
-var getLicence = require('./licence');
+const appConf = require('./app.conf.js');
+const getLicence = require('./licence');
 
-var path = require('path');
-var webpack = require('webpack');
+const path = require('path');
+const webpack = require('webpack');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
+const INDEX_TEMPLATE_PATH = path.resolve(__dirname, './templates/index.html');
+const INDEX_PATH = path.resolve(__dirname, '../src/app/index.js');
+const BUILD_PATH = path.resolve(__dirname, '../build');
+const DIST_PATH = path.resolve(__dirname, '../dist');
 
 function getDefaultConfig(options) {
     return {
-        entry: path.resolve(__dirname, '../src/app/index.js'),
+        entry: INDEX_PATH,
         output: {
-            path: path.resolve(__dirname, '../build'),
+            path: BUILD_PATH,
             filename: 'app.js'
         },
         module: {
@@ -21,11 +27,39 @@ function getDefaultConfig(options) {
             ]
         },
         plugins: [
+            /*
+             * Plugin: BannerPlugin
+             * Description: Inject a banner on top of the output file
+             * This is used to inject the licence.
+             *
+             * See: https://webpack.github.io/docs/list-of-plugins.html#bannerplugin
+             */
             new webpack.BannerPlugin(getLicence()),
+
+            /*
+             * Plugin: CopyWebpackPlugin
+             * Description: Copy files and directories in webpack.
+             * Copies project static assets.
+             *
+             * See: https://www.npmjs.com/package/copy-webpack-plugin
+             */
+            new CopyWebpackPlugin([{
+                from: 'src/assets',
+                to: 'assets'
+            }]),
+
+            /*
+             * Plugin: HtmlWebpackPlugin
+             * Description: Simplifies creation of HTML files to serve your webpack bundles.
+             * This is especially useful for webpack bundles that include a hash in the filename
+             * which changes every compilation.
+             *
+             * See: https://github.com/ampedandwired/html-webpack-plugin
+             */
             new HtmlWebpackPlugin({
                 title: appConf.title,
                 rootElement: appConf.appName,
-                template: 'config/templates/index.html'
+                template: INDEX_TEMPLATE_PATH
             })
         ],
         babel: {
@@ -33,6 +67,17 @@ function getDefaultConfig(options) {
         },
         devtool: options.devtool,
         debug: options.debug
+    };
+}
+
+function addDevServerConfig(config) {
+    config.devServer = {
+        port: appConf.port,
+            watchOptions: {
+            aggregateTimeout: 300,
+                poll: 1000
+        },
+        outputPath: BUILD_PATH
     };
 }
 
@@ -68,8 +113,12 @@ function addLinterConfig(config) {
     });
 }
 
-module.exports = function(options) {
-    var config = getDefaultConfig(options);
+module.exports = (options) => {
+    const config = getDefaultConfig(options);
+
+    if(options.devServer) {
+        addDevServerConfig(config);
+    }
 
     if(options.minify) {
         addMinifyConfig(config);

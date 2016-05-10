@@ -11,8 +11,15 @@
 
  ============================================================================ */
 
+require('./app.scss');
+
 const AppComponent = {
-    template: '<div>Hello world</div>',
+    template: `
+        <div class="app">
+            Hello world from 
+            <img src="/assets/images/logo.png" class="logo">
+        </div>
+    `,
 };
 
 export default AppComponent;

@@ -1,0 +1,10 @@
+@import "~bourbon/app/assets/stylesheets/bourbon";
+
+.app {
+  @include display(flex);
+  @include align-items(center);
+}
+
+.logo {
+  height: 40px;
+}
