@@ -14,6 +14,8 @@
 import angular from 'angular';
 import APP_MODULE from './components/app/app.module';
 
+require('./index.scss');
+
 // TODO change module name
 angular.module('talend-app', [APP_MODULE]);
 
