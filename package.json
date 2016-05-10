@@ -4,7 +4,16 @@
   "description": "Seed frontend project for Talend",
   "main": "index.js",
   "scripts": {
-    "clean": "rimraf ./dist",
+    "clean": "npm run clean:build && npm run clean:dist",
+      "clean:build": "rimraf ./build",
+      "clean:dist": "rimraf ./dist",
+
+    "build": "npm run build:dev",
+      "prebuild:dev": "npm run clean:build",
+      "build:dev": "webpack --config webpack.config.dev.js --progress --profile --colors --display-error-details --display-cached",
+      "prebuild:prod": "npm run clean:dist",
+      "build:prod": "webpack --config webpack.config.prod.js --progress --profile --colors --display-error-details --display-cached",
+
     "start": "webpack-dev-server --config webpack.config.dev.js --progress --colors --hot --content-base build"
   },
   "author": "",

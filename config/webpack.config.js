@@ -9,15 +9,19 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const INDEX_TEMPLATE_PATH = path.resolve(__dirname, './templates/index.html');
 const INDEX_PATH = path.resolve(__dirname, '../src/app/index.js');
+const VENDOR_PATH = path.resolve(__dirname, '../src/app/vendor.js');
 const BUILD_PATH = path.resolve(__dirname, '../build');
 const DIST_PATH = path.resolve(__dirname, '../dist');
 
 function getDefaultConfig(options) {
     return {
-        entry: INDEX_PATH,
+        entry: {
+            app: INDEX_PATH,
+            vendor: VENDOR_PATH
+        },
         output: {
-            path: BUILD_PATH,
-            filename: 'app.js'
+            path: options.dist ? DIST_PATH : BUILD_PATH,
+            filename: '[name].js'
         },
         module: {
             preLoaders: [],
@@ -60,11 +64,20 @@ function getDefaultConfig(options) {
                 title: appConf.title,
                 rootElement: appConf.appName,
                 template: INDEX_TEMPLATE_PATH
-            })
+            }),
+
+            /*
+             * Plugin: webpack.optimize.CommonsChunkPlugin
+             * Description: Identifies common modules and put them into a commons chunk
+             *
+             * See: https://github.com/webpack/docs/wiki/optimization
+             */
+            new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"vendor", /* filename= */"vendor.js")
         ],
         babel: {
             presets: ['es2015']
         },
+        cache: true,
         devtool: options.devtool,
         debug: options.debug
     };
