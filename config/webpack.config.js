@@ -62,7 +62,9 @@ function getDefaultConfig(options) {
              */
             new HtmlWebpackPlugin({
                 title: appConf.title,
-                rootElement: appConf.appName,
+                rootElement: appConf.rootElement,
+                rootModule: appConf.rootModule,
+                env: options.env,
                 template: INDEX_TEMPLATE_PATH
             }),
 
@@ -86,11 +88,11 @@ function getDefaultConfig(options) {
 function addDevServerConfig(config) {
     config.devServer = {
         port: appConf.port,
-            watchOptions: {
+        watchOptions: {
             aggregateTimeout: 300,
-                poll: 1000
+            poll: 1000
         },
-        outputPath: BUILD_PATH
+        outputPath: config.dist ? DIST_PATH : BUILD_PATH
     };
 }
 

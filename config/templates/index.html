@@ -21,5 +21,10 @@ along with this program; if not, write to Talend SA
 </head>
 <body>
     <<%= htmlWebpackPlugin.options.rootElement %>></<%= htmlWebpackPlugin.options.rootElement %>>
+
 </body>
+<script language="JavaScript">
+    fetchConfiguration('<%= htmlWebpackPlugin.options.env %>')
+        .then(bootstrapApplication.bind(null, ['<%= htmlWebpackPlugin.options.rootModule %>']));
+</script>
 </html>

@@ -11,10 +11,13 @@
 
  ============================================================================ */
 
-/* eslint-disable no-unused-vars */
-
 import angular from 'angular';
+import RestURLs from './rest-urls.service';
 
-// TODO insert here the libraries imports to be bundled in vendor.js
+// TODO change the module name
+const MODULE_NAME = 'talend-app.config';
 
-/* eslint-enable no-unused-vars */
+angular.module(MODULE_NAME, [])
+    .service('RestURLs', RestURLs);
+
+export default MODULE_NAME;

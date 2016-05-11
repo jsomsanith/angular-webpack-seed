@@ -11,15 +11,27 @@
 
  ============================================================================ */
 
+/* eslint-disable angular/window-service */
+/* eslint-disable angular/module-setter */
+
+import { configure, bootstrapApplication } from './bootstrap';
+
 import angular from 'angular';
 import APP_MODULE from './components/app/app.module';
+import CONFIG_MODULE from './services/config/config.module';
 
 require('./index.scss');
 
-// TODO change module name
-angular.module('talend-app', [APP_MODULE]);
+(() => {
+    // TODO change module name (don't forget to change it in app.conf.js too !)
+    const mainModule = angular.module('talend-app', [
+        APP_MODULE,     // app root component module
+        CONFIG_MODULE,  // app configuration module
+    ]);
 
-// TODO change module name
-angular.element(document)
-    .ready(() => angular.bootstrap(document, ['talend-app']));
+    window.fetchConfiguration = configure(mainModule);
+    window.bootstrapApplication = bootstrapApplication;
+})();
 
+/* eslint-enable angular/window-service */
+/* eslint-enable angular/module-setter */

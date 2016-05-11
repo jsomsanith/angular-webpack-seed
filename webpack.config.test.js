@@ -1,6 +1,7 @@
 module.exports = require("./config/webpack.config.js")({
-    devtool: "inline-source-map",
+    env: 'test',
     debug: true,
-    test: true,
-    linter: true
+    devtool: "inline-source-map",
+    linter: true,
+    test: true
 });

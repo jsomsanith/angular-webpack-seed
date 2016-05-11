@@ -2,7 +2,7 @@
   "name": "talend-frontend-seed",
   "version": "1.0.0",
   "description": "Seed frontend project for Talend",
-  "main": "index.js",
+  "main": "build/app.js",
   "scripts": {
     "clean": "npm run clean:build && npm run clean:dist",
       "clean:build": "rimraf ./build",
@@ -11,10 +11,16 @@
     "build": "npm run build:dev",
       "prebuild:dev": "npm run clean:build",
       "build:dev": "webpack --config webpack.config.dev.js --progress --profile --colors --display-error-details --display-cached",
-      "prebuild:prod": "npm run clean:dist",
-      "build:prod": "webpack --config webpack.config.prod.js --progress --profile --colors --display-error-details --display-cached",
+      "prebuild:dist": "npm run clean:dist",
+      "build:dist": "webpack --config webpack.config.prod.js --progress --profile --colors --display-error-details --display-cached",
 
-    "start": "webpack-dev-server --config webpack.config.dev.js --progress --colors --hot --content-base build"
+    "serve": "npm run serve:dev",
+      "preserve:dev": "npm run clean:build",
+      "serve:dev": "webpack-dev-server --config webpack.config.dev.js --progress --colors --hot --content-base build",
+      "preserve:dist": "npm run clean:dist",
+      "serve:dist": "webpack-dev-server --config webpack.config.prod.js --progress --colors --hot --content-base dist",
+
+    "start": "npm run serve"
   },
   "author": "",
   "license": "ISC",
