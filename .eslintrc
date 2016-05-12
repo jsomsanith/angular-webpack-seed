@@ -38,7 +38,8 @@
     "jasmine": true
   },
   "globals": {
-    "inject": true
+    "inject": true,
+    "angular": true
   },
   "parserOptions": {
     "ecmaVersion": 6,

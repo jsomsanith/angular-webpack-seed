@@ -8,7 +8,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const INDEX_TEMPLATE_PATH = path.resolve(__dirname, './templates/index.html');
-const INDEX_PATH = path.resolve(__dirname, '../src/app/index.js');
+const INDEX_PATH = path.resolve(__dirname, '../src/app/index.module.js');
 const VENDOR_PATH = path.resolve(__dirname, '../src/app/vendor.js');
 const BUILD_PATH = path.resolve(__dirname, '../build');
 const DIST_PATH = path.resolve(__dirname, '../dist');
@@ -21,61 +21,16 @@ function getDefaultConfig(options) {
         },
         output: {
             path: options.dist ? DIST_PATH : BUILD_PATH,
-            filename: '[name].js'
+            filename: '[name]-[hash].js'
         },
         module: {
             preLoaders: [],
             loaders: [
-                {test: /\.js$/, loaders: ['ng-annotate', 'babel'],  exclude: [/node_modules/]},
+                {test: /\.js$/, loaders: ['ng-annotate', 'babel'], exclude: [/node_modules/]},
                 {test: /\.scss$/, loaders: ["style", "css", "sass"]}
             ]
         },
-        plugins: [
-            /*
-             * Plugin: BannerPlugin
-             * Description: Inject a banner on top of the output file
-             * This is used to inject the licence.
-             *
-             * See: https://webpack.github.io/docs/list-of-plugins.html#bannerplugin
-             */
-            new webpack.BannerPlugin(getLicence()),
-
-            /*
-             * Plugin: CopyWebpackPlugin
-             * Description: Copy files and directories in webpack.
-             * Copies project static assets.
-             *
-             * See: https://www.npmjs.com/package/copy-webpack-plugin
-             */
-            new CopyWebpackPlugin([{
-                from: 'src/assets',
-                to: 'assets'
-            }]),
-
-            /*
-             * Plugin: HtmlWebpackPlugin
-             * Description: Simplifies creation of HTML files to serve your webpack bundles.
-             * This is especially useful for webpack bundles that include a hash in the filename
-             * which changes every compilation.
-             *
-             * See: https://github.com/ampedandwired/html-webpack-plugin
-             */
-            new HtmlWebpackPlugin({
-                title: appConf.title,
-                rootElement: appConf.rootElement,
-                rootModule: appConf.rootModule,
-                env: options.env,
-                template: INDEX_TEMPLATE_PATH
-            }),
-
-            /*
-             * Plugin: webpack.optimize.CommonsChunkPlugin
-             * Description: Identifies common modules and put them into a commons chunk
-             *
-             * See: https://github.com/webpack/docs/wiki/optimization
-             */
-            new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"vendor", /* filename= */"vendor.js")
-        ],
+        plugins: [],
         babel: {
             presets: ['es2015']
         },
@@ -117,6 +72,61 @@ function addTestConfig(config) {
         }
     };
     config.module.preLoaders.push({test: /\.js$/, loader: 'isparta', exclude: [/node_modules/, /\.spec\.js$/]});
+    config.externals = {
+        'angular': 'angular'
+    };
+    config.plugins.push(new webpack.ProvidePlugin({
+        'angular': 'angular'
+    }));
+}
+
+function addPlugins(config, options) {
+    config.plugins.push(
+        /*
+         * Plugin: CopyWebpackPlugin
+         * Description: Copy files and directories in webpack.
+         * Copies project static assets.
+         *
+         * See: https://www.npmjs.com/package/copy-webpack-plugin
+         */
+        new CopyWebpackPlugin([{
+            from: 'src/assets',
+            to: 'assets'
+        }]),
+
+        /*
+         * Plugin: HtmlWebpackPlugin
+         * Description: Simplifies creation of HTML files to serve your webpack bundles.
+         * This is especially useful for webpack bundles that include a hash in the filename
+         * which changes every compilation.
+         *
+         * See: https://github.com/ampedandwired/html-webpack-plugin
+         */
+        new HtmlWebpackPlugin({
+            title: appConf.title,
+            rootElement: appConf.rootElement,
+            rootModule: appConf.rootModule,
+            env: options.env,
+            template: INDEX_TEMPLATE_PATH
+        }),
+
+        /*
+         * Plugin: BannerPlugin
+         * Description: Inject a banner on top of the output file
+         * This is used to inject the licence.
+         *
+         * See: https://webpack.github.io/docs/list-of-plugins.html#bannerplugin
+         */
+        new webpack.BannerPlugin(getLicence()),
+
+        /*
+         * Plugin: webpack.optimize.CommonsChunkPlugin
+         * Description: Identifies common modules and put them into a commons chunk
+         *
+         * See: https://github.com/webpack/docs/wiki/optimization
+         */
+        new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor-[hash].js'})
+    );
 }
 
 function addLinterConfig(config) {
@@ -131,23 +141,26 @@ function addLinterConfig(config) {
 module.exports = (options) => {
     const config = getDefaultConfig(options);
 
-    if(options.devServer) {
+    if (options.devServer) {
         addDevServerConfig(config);
     }
 
-    if(options.minify) {
+    if (options.minify) {
         addMinifyConfig(config);
     }
 
-    if(options.stripComments) {
+    if (options.stripComments) {
         addStripCommentsConfig(config);
     }
 
-    if(options.test) {
+    if (options.test) {
         addTestConfig(config);
     }
+    else {
+        addPlugins(config, options);
+    }
 
-    if(options.linter) {
+    if (options.linter) {
         addLinterConfig(config);
     }
 
