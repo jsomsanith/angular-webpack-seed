@@ -26,8 +26,9 @@ function getDefaultConfig(options) {
         module: {
             preLoaders: [],
             loaders: [
-                {test: /\.js$/, loaders: ['ng-annotate', 'babel'], exclude: [/node_modules/]},
-                {test: /\.scss$/, loaders: ["style", "css", "sass"]}
+                { test: /\.js$/, loaders: ['ng-annotate', 'babel'], exclude: [/node_modules/] },
+                { test: /\.scss$/, loaders: ['style', 'css', 'sass'] },
+                { test: /\.html$/, loaders: ['ngtemplate', 'html'], exclude: INDEX_TEMPLATE_PATH }
             ]
         },
         plugins: [],
@@ -125,7 +126,7 @@ function addPlugins(config, options) {
          *
          * See: https://github.com/webpack/docs/wiki/optimization
          */
-        new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor-[hash].js'})
+        new webpack.optimize.CommonsChunkPlugin({ name: 'vendor' })
     );
 }
 
