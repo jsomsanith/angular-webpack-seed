@@ -6,6 +6,7 @@ const webpack = require('webpack');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const SassLintPlugin = require('sasslint-webpack-plugin');
 
 const INDEX_TEMPLATE_PATH = path.resolve(__dirname, './templates/index.html');
 const INDEX_PATH = path.resolve(__dirname, '../src/app/index.module.js');
@@ -131,14 +132,30 @@ function addPlugins(config, options) {
 }
 
 function addLinterConfig(config) {
-    config.eslint = {configFile: '.eslintrc'};
+    config.eslint = { configFile: '.eslintrc' };
     config.module.preLoaders.push({
         test: /src\/.*\.js$/,
         exclude: /node_modules/,
         loader: 'eslint-loader'
     });
+
+    config.plugins.push(new SassLintPlugin({
+        glob: 'src/app/**/*.s?(a|c)ss'
+    }));
 }
 
+/*
+{
+    env: ('dev' | 'prod' | 'test'),     // the environment
+    debug: (true | false),              // enable debug
+    devtool: 'inline-source-map',       // source map
+    dist: (true | false),               // output in dist folder instead of build folder
+    devServer: (true | false),          // configure webpack-dev-server
+    linter: (true | false),             // enable eslint and sass-lint                  
+    stripComments: (true | false),      // remove comments
+    test: (true | false)                // configure tests
+ }
+ */
 module.exports = (options) => {
     const config = getDefaultConfig(options);
 

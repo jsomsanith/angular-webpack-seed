@@ -24,7 +24,9 @@
     "test": "karma start",
       "test:auto": "karma start --auto",
 
-    "lint": "eslint --config .eslintrc src/app/**/*.js",
+    "lint": "npm run lint:es",
+      "lint:es": "eslint --config .eslintrc src/app/**/*.js",
+      "lint:sass": "sass-lint -c .sass-lint.yml 'src/app/**/*.scss' -v -q",
 
     "start": "npm run serve"
   },
@@ -63,10 +65,12 @@
     "node-sass": "^3.7.0",
     "phantomjs-prebuilt": "^2.1.7",
     "rimraf": "^2.5.2",
+    "sass-lint": "^1.7.0",
     "sass-loader": "^3.2.0",
+    "sasslint-webpack-plugin": "^1.0.3",
     "stripcomment-loader": "^0.1.0",
     "style-loader": "^0.13.1",
-    "webpack": "^2.1.0-beta.2",
+    "webpack": "^2.1.0-beta.7",
     "webpack-dev-server": "^1.14.1"
   }
 }
