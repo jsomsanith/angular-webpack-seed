@@ -49,6 +49,9 @@ function addDevServerConfig(config) {
             aggregateTimeout: 300,
             poll: 1000
         },
+        hot: true,
+        inline: false,
+        contentBase: config.dist ? DIST_PATH : BUILD_PATH,
         outputPath: config.dist ? DIST_PATH : BUILD_PATH
     };
 }
@@ -132,7 +135,7 @@ function addPlugins(config, options) {
 }
 
 function addLinterConfig(config) {
-    config.eslint = { configFile: '.eslintrc' };
+    config.eslint = { configFile: path.resolve(__dirname, '../.eslintrc') };
     config.module.preLoaders.push({
         test: /src\/.*\.js$/,
         exclude: /node_modules/,
@@ -148,10 +151,11 @@ function addLinterConfig(config) {
 {
     env: ('dev' | 'prod' | 'test'),     // the environment
     debug: (true | false),              // enable debug
-    devtool: 'inline-source-map',       // source map
+    devtool: 'inline-source-map',       // source map type
     dist: (true | false),               // output in dist folder instead of build folder
-    devServer: (true | false),          // configure webpack-dev-server
+    devServer: (true | false),          // configure webpack-dev-server and plugins to generate app
     linter: (true | false),             // enable eslint and sass-lint                  
+    minify: (true | false),             // enable minification/uglification
     stripComments: (true | false),      // remove comments
     test: (true | false)                // configure tests
  }
@@ -161,6 +165,7 @@ module.exports = (options) => {
 
     if (options.devServer) {
         addDevServerConfig(config);
+        addPlugins(config, options);
     }
 
     if (options.minify) {
@@ -173,9 +178,6 @@ module.exports = (options) => {
 
     if (options.test) {
         addTestConfig(config);
-    }
-    else {
-        addPlugins(config, options);
     }
 
     if (options.linter) {

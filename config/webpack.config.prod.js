@@ -1,4 +1,4 @@
-module.exports = require("./config/webpack.config.js")({
+module.exports = require("./webpack.config.js")({
     env: 'prod',
     devServer: true,
     dist: true,
