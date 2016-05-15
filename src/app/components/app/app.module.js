@@ -12,11 +12,12 @@
  ============================================================================ */
 
 import angular from 'angular';
+import sunchoke from 'sunchoke';
 import AppComponent from './app.component';
 
 const MODULE_NAME = 'talend-app.app';
 
-angular.module(MODULE_NAME, [])
+angular.module(MODULE_NAME, [sunchoke.dropdown])
     .component('app', AppComponent);
 
 export default MODULE_NAME;

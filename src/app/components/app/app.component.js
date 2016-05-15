@@ -17,7 +17,15 @@ const AppComponent = {
     template: `
         <div class="app">
             Hello world from 
-            <img src="/assets/images/logo.png" class="logo">
+            <sc-dropdown>
+                <sc-dropdown-trigger>
+                    <img src="/assets/images/logo.png" class="logo">
+                </sc-dropdown-trigger>
+                <sc-dropdown-content>
+                    <a href="http://talend.com">Go to website</a>
+                </sc-dropdown-content>
+            </sc-dropdown>
+            
         </div>
     `,
 };
