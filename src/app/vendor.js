@@ -13,9 +13,16 @@
 
 /* eslint-disable no-unused-vars */
 
-import angular from 'angular';
-import animate from 'angular-animate';
-import sunchoke from 'sunchoke';
+import 'zone.js/dist/zone';
+import 'reflect-metadata/Reflect';
+
+// Angular 2
+import '@angular/platform-browser';
+import '@angular/platform-browser-dynamic';
+import '@angular/core';
+import '@angular/common';
+import '@angular/http';
+import '@angular/router-deprecated';
 
 // TODO insert here the libraries imports to be bundled in vendor.js
 

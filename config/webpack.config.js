@@ -9,7 +9,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const SassLintPlugin = require('sasslint-webpack-plugin');
 
 const INDEX_TEMPLATE_PATH = path.resolve(__dirname, './templates/index.html');
-const INDEX_PATH = path.resolve(__dirname, '../src/app/index.module.js');
+const INDEX_PATH = path.resolve(__dirname, '../src/app/index.js');
 const VENDOR_PATH = path.resolve(__dirname, '../src/app/vendor.js');
 const BUILD_PATH = path.resolve(__dirname, '../build');
 const DIST_PATH = path.resolve(__dirname, '../dist');
@@ -17,8 +17,8 @@ const DIST_PATH = path.resolve(__dirname, '../dist');
 function getDefaultConfig(options) {
     return {
         entry: {
-            app: INDEX_PATH,
-            vendor: VENDOR_PATH
+            vendor: VENDOR_PATH,
+            app: INDEX_PATH
         },
         output: {
             path: options.dist ? DIST_PATH : BUILD_PATH,
@@ -27,14 +27,15 @@ function getDefaultConfig(options) {
         module: {
             preLoaders: [],
             loaders: [
-                { test: /\.js$/, loaders: ['ng-annotate', 'babel'], exclude: [/node_modules/] },
+                { test: /\.js$/, loaders: ['babel'], exclude: [/node_modules/] },
                 { test: /\.scss$/, loaders: ['style', 'css', 'sass'] },
-                { test: /\.html$/, loaders: ['ngtemplate', 'html'], exclude: INDEX_TEMPLATE_PATH }
+                { test: /\.html$/, loaders: ['html'], exclude: INDEX_TEMPLATE_PATH },
+                { test: /\.json$/, loader: 'json-loader' }
             ]
         },
         plugins: [],
         babel: {
-            presets: ['es2015']
+            presets: ['es2015', 'angular2']
         },
         cache: true,
         devtool: options.devtool,
@@ -73,16 +74,10 @@ function addTestConfig(config) {
         embedSource: true,
         noAutoWrap: true,
         babel: {
-            presets: ['es2015']
+            presets: ['es2015', 'angular2']
         }
     };
     config.module.preLoaders.push({test: /\.js$/, loader: 'isparta', exclude: [/node_modules/, /\.spec\.js$/]});
-    config.externals = {
-        'angular': 'angular'
-    };
-    config.plugins.push(new webpack.ProvidePlugin({
-        'angular': 'angular'
-    }));
 }
 
 function addPlugins(config, options) {

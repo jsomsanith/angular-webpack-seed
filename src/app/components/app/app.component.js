@@ -11,23 +11,17 @@
 
  ============================================================================ */
 
-require('./app.scss');
+import { Component } from '@angular/core';
+import AppStyle from './app.scss';
 
-const AppComponent = {
+@Component({
+    selector: 'app',
     template: `
         <div class="app">
-            Hello world from 
-            <sc-dropdown>
-                <sc-dropdown-trigger>
-                    <img src="/assets/images/logo.png" class="logo">
-                </sc-dropdown-trigger>
-                <sc-dropdown-content>
-                    <a href="http://talend.com">Go to website</a>
-                </sc-dropdown-content>
-            </sc-dropdown>
-            
+            Hello world from
+            <img src="/assets/images/logo.png" class="logo">
         </div>
     `,
-};
-
-export default AppComponent;
+    stylesUrl: [AppStyle],
+})
+export default class AppComponent {}

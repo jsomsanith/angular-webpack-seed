@@ -9,11 +9,13 @@ module.exports = function (config) {
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: '',
         files: [
-            './node_modules/jquery/dist/jquery.js',
-            './node_modules/angular/angular.js',
-            './node_modules/angular-animate/angular-animate.js',
-            './node_modules/angular-mocks/angular-mocks.js',
-            'src/**/*.module.js',
+            './node_modules/reflect-metadata/Reflect.js',
+            './node_modules/zone.js/dist/zone.js',
+            './node_modules/zone.js/dist/long-stack-trace-zone.js',
+            './node_modules/zone.js/dist/jasmine-patch.js',
+            './node_modules/zone.js/dist/async-test.js',
+            './node_modules/@angular/core/testing.js',
+            './node_modules/@angular/platform-browser-dynamic/testing.js',
             'src/**/*.spec.js'
         ],
         exclude: [],
