@@ -77,7 +77,7 @@ function addTestConfig(config) {
             presets: ['es2015', 'angular2']
         }
     };
-    config.module.preLoaders.push({test: /\.js$/, loader: 'isparta', exclude: [/node_modules/, /\.spec\.js$/]});
+    config.module.preLoaders.push({test: /\.js$/, loader: 'isparta', exclude: [/node_modules/, /config/, /\.spec\.js$/]});
 }
 
 function addPlugins(config, options) {

@@ -9,14 +9,25 @@ module.exports = function (config) {
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: '',
         files: [
+            // polyfills
             './node_modules/reflect-metadata/Reflect.js',
+            './node_modules/babel-polyfill/browser.js',
+
+            // zones
             './node_modules/zone.js/dist/zone.js',
             './node_modules/zone.js/dist/long-stack-trace-zone.js',
             './node_modules/zone.js/dist/jasmine-patch.js',
             './node_modules/zone.js/dist/async-test.js',
-            './node_modules/@angular/core/testing.js',
-            './node_modules/@angular/platform-browser-dynamic/testing.js',
-            'src/**/*.spec.js'
+            './node_modules/zone.js/dist/fake-async-test.js',
+
+            // Rx
+            { pattern: 'node_modules/rxjs/**/*.js', included: false, watched: false },
+
+            // angular
+            { pattern: './node_modules/@angular/**/*.js', included: false, watched: true },
+
+            // tests
+            './config/test-env.js'
         ],
         exclude: [],
 
@@ -24,7 +35,8 @@ module.exports = function (config) {
         browsers: ['PhantomJS'],
 
         preprocessors: {
-            'src/**/*.js': ['webpack']
+            './config/test-env.js': ['webpack'],
+            './src/**/*.js': ['webpack']
         },
 
         reporters: ['progress', 'coverage'],
