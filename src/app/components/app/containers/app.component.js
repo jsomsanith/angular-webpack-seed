@@ -14,15 +14,19 @@
 import { Component, Inject, ApplicationRef } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import AppStyle from './app.scss';
-import HelloWorld from './components/helloWorld.component';
-import TalendButton from './components/button.component';
-import Counter from './components/counter.component';
+import HelloWorld from '../components/helloWorld.component';
+import TalendButton from '../components/button.component';
+import Counter from '../components/counter.component';
 
 import { NgRedux } from 'ng2-redux';
 import { bindActionCreators } from 'redux';
 import { Observable } from 'rxjs';
-import * as counterActionCreator from '../../actions/counterActions';
+import * as counterActionCreator from '../../../actions/counterActions';
 
+/**
+ * Container component, shouldn't do anything else than bind value and action from store and pass
+ * them down to children components
+ */
 @Component({
     selector: 'app',
     pipes: [AsyncPipe],
@@ -46,6 +50,8 @@ export default class AppComponent {
 
     ngOnInit() {
         this.disconnect = this.ngRedux.connect(this.mapStateToThis, this.mapDispatchToThis)(this);
+        // help component to update when modification to state are made from redux dev tools
+        // https://github.com/gaearon/redux-devtools
         if (process.env.NODE_ENV === 'developpement') {
             this.unsubscribe = this.ngRedux.subscribe(() => {
                 this.applicationRef.tick();
@@ -60,12 +66,17 @@ export default class AppComponent {
         }
     }
 
+    /**
+     * bind a subslection of redux store state on to this component
+     */
     mapStateToThis(state) {
         return {
             counter: state.counter,
         };
     }
-
+    /**
+     * bind dispatchable action creators on to this component
+     */
     mapDispatchToThis(dispatch) {
         return bindActionCreators(counterActionCreator, dispatch);
     }

@@ -25,6 +25,10 @@ import '@angular/common';
 import '@angular/http';
 import '@angular/router-deprecated';
 
+// redux
+import 'redux';
+import 'ng2-redux';
+
 // TODO insert here the libraries imports to be bundled in vendor.js
 
 /* eslint-enable no-unused-vars */
