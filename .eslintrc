@@ -4,7 +4,9 @@
   "rules": {
     "brace-style": [2, "stroustrup"],
     "indent": [2, 4],
-    "new-cap": [2, { "capIsNewExceptions": ["Component"] }]
+    "new-cap": [2, { "capIsNewExceptions": 
+      ["Component", "Input", "Injectable"] 
+     }]
   },
   "env": {
     "es6": true,

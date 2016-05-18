@@ -16,16 +16,22 @@ import { bootstrap } from '@angular/platform-browser-dynamic';
 import { ROUTER_PROVIDERS } from '@angular/router';
 import { HTTP_PROVIDERS } from '@angular/http';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+/* redux related imports */
+import { provider } from 'ng2-redux';
 
 import AppComponent from './components/app/app.component';
+import configureStore from './store/configureStore';
 
 /* eslint-disable no-console */
+
+const store = configureStore();
 
 bootstrap(AppComponent,
     [
         HTTP_PROVIDERS,
         ROUTER_PROVIDERS,
         provide(LocationStrategy, { useClass: HashLocationStrategy }),
+        provider(store),
     ])
     .catch(err => console.error(err));
 
