@@ -19,7 +19,6 @@ import TalendButton from '../components/button.component';
 import Counter from '../components/counter.component';
 
 import { NgRedux } from 'ng2-redux';
-import { bindActionCreators } from 'redux';
 import { Observable } from 'rxjs';
 import * as counterActionCreator from '../../../actions/counterActions';
 
@@ -34,8 +33,8 @@ import * as counterActionCreator from '../../../actions/counterActions';
         <div class="app">
             <hello-world></hello-world>
             <talend-button label="super"></talend-button>
-            <counter [counter]="counter" [increment]="increment"></counter>
-            <counter [counter]="counter" [increment]="asyncIncrement"></counter>
+            <counter [counter]="counter$| async" [increment]="increment"></counter>
+            <counter [counter]="counter$| async" [increment]="asyncIncrement"></counter>
         </div>
     `,
     directives: [HelloWorld, TalendButton, Counter],
@@ -43,13 +42,16 @@ import * as counterActionCreator from '../../../actions/counterActions';
 })
 export default class AppComponent {
 
+    counter$ = 0;
+
     constructor(@Inject('ngRedux') NgRedux, @Inject(ApplicationRef) ApplicationRef) {
         this.ngRedux = NgRedux;
         this.applicationRef = ApplicationRef;
     }
 
     ngOnInit() {
-        this.disconnect = this.ngRedux.connect(this.mapStateToThis, this.mapDispatchToThis)(this);
+        // bind a subslection of redux store state on to this component as an observable
+        this.counter$ = this.ngRedux.select('counter');
         // help component to update when modification to state are made from redux dev tools
         // https://github.com/gaearon/redux-devtools
         if (process.env.NODE_ENV === 'developpement') {
@@ -59,25 +61,20 @@ export default class AppComponent {
         }
     }
 
+    /**
+     * bind dispatchable action creators on to this component
+     */
+    increment = () => this.ngRedux.dispatch(counterActionCreator.increment());
+
+    /**
+     * bind dispatchable async action creators on to this component
+     */
+    asyncIncrement = () => this.ngRedux.dispatch(counterActionCreator.asyncIncrement());
+
     ngOnDestroy() {
-        this.disconnect();
         if (process.env.NODE_ENV === 'developpement') {
             this.unsubscribe();
         }
     }
 
-    /**
-     * bind a subslection of redux store state on to this component
-     */
-    mapStateToThis(state) {
-        return {
-            counter: state.counter,
-        };
-    }
-    /**
-     * bind dispatchable action creators on to this component
-     */
-    mapDispatchToThis(dispatch) {
-        return bindActionCreators(counterActionCreator, dispatch);
-    }
 }
