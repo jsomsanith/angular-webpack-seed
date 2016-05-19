@@ -22,6 +22,8 @@ import { provider } from 'ng2-redux';
 import AppComponent from './components/app/containers/app.component';
 import configureStore from './store/configureStore';
 
+import UserInjectableActions from './actions/userActions';
+
 /* eslint-disable no-console */
 
 const store = configureStore();
@@ -31,6 +33,7 @@ bootstrap(AppComponent,
         HTTP_PROVIDERS,
         ROUTER_PROVIDERS,
         provide(LocationStrategy, { useClass: HashLocationStrategy }),
+        UserInjectableActions,
         provider(store),
     ])
     .catch(err => console.error(err));

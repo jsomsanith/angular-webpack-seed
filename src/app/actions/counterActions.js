@@ -59,7 +59,3 @@ export function promiseAsyncIncrement() {
  * Observable based action
  */
 
-/**
- * TODO
- * Async action using angular http service
- */

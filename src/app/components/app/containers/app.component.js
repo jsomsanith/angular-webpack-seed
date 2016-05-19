@@ -21,6 +21,7 @@ import Counter from '../components/counter.component';
 import { NgRedux } from 'ng2-redux';
 import { Observable } from 'rxjs';
 import * as counterActionCreator from '../../../actions/counterActions';
+import UserInjectableActions from '../../../actions/userActions';
 
 /**
  * Container component, shouldn't do anything else than bind value and action from store and pass
@@ -32,7 +33,7 @@ import * as counterActionCreator from '../../../actions/counterActions';
     template: `
         <div class="app">
             <hello-world></hello-world>
-            <talend-button label="super"></talend-button>
+            <talend-button>super</talend-button>
             <counter [counter]="counter$| async" [increment]="increment">
                 synchronous increment +
             </counter>
@@ -42,6 +43,7 @@ import * as counterActionCreator from '../../../actions/counterActions';
             <counter [counter]="counter$| async" [increment]="promiseAsyncIncrement">
                 synchronous promise based increment +
             </counter>
+            <talend-button (click)="login()">async action with angular service</talend-button>
         </div>
     `,
     directives: [HelloWorld, TalendButton, Counter],
@@ -51,9 +53,21 @@ export default class AppComponent {
 
     counter$ = 0;
 
-    constructor(@Inject('ngRedux') NgRedux, @Inject(ApplicationRef) ApplicationRef) {
-        this.ngRedux = NgRedux;
-        this.applicationRef = ApplicationRef;
+    constructor(
+        @Inject(NgRedux) ngRedux,
+        @Inject(ApplicationRef) applicationRef,
+        @Inject(UserInjectableActions) userInjectableActions) {
+        this.ngRedux = ngRedux;
+        this.applicationRef = applicationRef;
+        this.userInjectableActions = userInjectableActions;
+        // bind the injected action creator class method to this.
+        this.ngRedux.mapDispatchToTarget(dispatch => {
+            return {
+                login: () => dispatch(
+                    this.userInjectableActions.loginUser({ name: 'test' })
+                ),
+            };
+        })(this);
     }
 
     ngOnInit() {

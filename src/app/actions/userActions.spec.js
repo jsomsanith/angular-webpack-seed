@@ -11,13 +11,14 @@
 
  ============================================================================ */
 
-import { Component, Input } from '@angular/core';
+import { LOGIN_USER_PENDING, LOGIN_USER_SUCCESS, LOGIN_USER_ERROR } from '../constants/userConstants';
 
-@Component({
-    selector: 'talend-button',
-    template: '<button><ng-content></ng-content></button>',
-})
-export default class TalendButton {
-    @Input()
-    label;
-}
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
+
+describe('userAction', () => {
+
+});
