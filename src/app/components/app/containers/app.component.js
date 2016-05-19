@@ -33,8 +33,15 @@ import * as counterActionCreator from '../../../actions/counterActions';
         <div class="app">
             <hello-world></hello-world>
             <talend-button label="super"></talend-button>
-            <counter [counter]="counter$| async" [increment]="increment"></counter>
-            <counter [counter]="counter$| async" [increment]="asyncIncrement"></counter>
+            <counter [counter]="counter$| async" [increment]="increment">
+                synchronous increment +
+            </counter>
+            <counter [counter]="counter$| async" [increment]="asyncIncrement">
+                asynchronous increment +
+            </counter>
+            <counter [counter]="counter$| async" [increment]="promiseAsyncIncrement">
+                synchronous promise based increment +
+            </counter>
         </div>
     `,
     directives: [HelloWorld, TalendButton, Counter],
@@ -70,6 +77,8 @@ export default class AppComponent {
      * bind dispatchable async action creators on to this component
      */
     asyncIncrement = () => this.ngRedux.dispatch(counterActionCreator.asyncIncrement());
+
+    promiseAsyncIncrement = () => this.ngRedux.dispatch(counterActionCreator.promiseAsyncIncrement());
 
     ngOnDestroy() {
         if (process.env.NODE_ENV === 'developpement') {

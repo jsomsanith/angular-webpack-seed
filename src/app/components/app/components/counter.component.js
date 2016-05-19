@@ -17,7 +17,9 @@ import { Component, Input } from '@angular/core';
     template: `
         <div>
             <span>{{counter}}</span>
-            <button (click)="increment()">+</button>
+            <button (click)="increment()">
+                <ng-content></ng-content>
+            </button>
         </div>
     `,
 })

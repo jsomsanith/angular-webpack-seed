@@ -11,24 +11,48 @@
 
  ============================================================================ */
 
-import { INCREMENT } from '../constants/counterConstants';
+import { INCREMENT, INCREMENT_REQUEST } from '../constants/counterConstants';
 
+/**
+ * synchronous action creator AKA classic one
+ */
 export function increment() {
     return { type: INCREMENT };
 }
 
+/**
+ * Asynchronous action creator
+ */
 export function asyncIncrement() {
-    return (dispatch) => {
+    return dispatch => {
         setTimeout(() => {
             dispatch(increment());
         }, 1000);
     };
 }
 
+
+function incrementRequest() {
+    return {
+        type: INCREMENT_REQUEST,
+    };
+}
+
 /**
- * TODO
- * Promise based action
+ * Asynchronous promise based action creator
  */
+export function promiseAsyncIncrement() {
+    return dispatch => {
+        dispatch(incrementRequest());
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve('OK');
+            }, 1000);
+        }).then((value) => {
+            dispatch(increment());
+        });
+    };
+}
 
 /**
  * TODO

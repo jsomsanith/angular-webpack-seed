@@ -11,8 +11,8 @@
 
  ============================================================================ */
 
-import { increment, asyncIncrement } from './counterActions';
-import { INCREMENT } from '../constants/counterConstants';
+import { increment, asyncIncrement, promiseAsyncIncrement } from './counterActions';
+import { INCREMENT, INCREMENT_REQUEST } from '../constants/counterConstants';
 
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -23,14 +23,21 @@ const mockStore = configureMockStore(middlewares);
 const expectedIncrementAction = { type: INCREMENT };
 
 describe('counterAction', () => {
+
+    /**
+     * Testing a classical synchronous action creator
+     */
     it('increment action creator should return a proper increment action', () => {
         expect(increment()).toEqual(expectedIncrementAction);
     });
 
+    /**
+     * Testing an asynchronous action creator (beware they can fire multiple action)
+     */
     it('asyncIncrement action creator should dispatch a proper increment action', (done) => {
         const store = mockStore({});
         /**
-         * FIXME: Should be the right way to test async action when 
+         * FIXME: Should be the right way to test async action when
          * https://github.com/arnaudbenard/redux-mock-store/pull/38
          * will be merged in redux-mock-store
          */
@@ -46,5 +53,18 @@ describe('counterAction', () => {
             expect(action).toEqual(expectedIncrementAction);
             done();
         }, 1100);
+    });
+
+    /**
+     * Testing an asynchronous action creator baked by a promise
+     */
+    it('asyncPromiseIncrement should dispatch a proper action increment', (done) => {
+        const expectedActions = [{ type: INCREMENT_REQUEST }, expectedIncrementAction];
+        const store = mockStore({});
+        return store.dispatch(promiseAsyncIncrement())
+            .then(() => {
+                expect(store.getActions()).toEqual(expectedActions);
+                done();
+            });
     });
 });
