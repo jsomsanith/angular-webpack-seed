@@ -14,14 +14,14 @@
 import { Component, Inject, ApplicationRef } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import AppStyle from './app.scss';
-import HelloWorld from '../components/helloWorld.component';
-import TalendButton from '../components/button.component';
-import Counter from '../components/counter.component';
+import HelloWorld from './helloWorld.component';
+import TalendButton from './button.component';
+import Counter from './counter.component';
 
 import { NgRedux } from 'ng2-redux';
 import { Observable } from 'rxjs';
-import * as counterActionCreator from '../../../actions/counterActions';
-import UserInjectableActions from '../../../actions/userActions';
+import * as counterActionCreator from '../actions/counterActions';
+import UserInjectableActions from '../actions/userActions';
 
 /**
  * Container component, shouldn't do anything else than bind value and action from store and pass
@@ -61,13 +61,9 @@ export default class AppComponent {
         this.applicationRef = applicationRef;
         this.userInjectableActions = userInjectableActions;
         // bind the injected action creator class method to this.
-        this.ngRedux.mapDispatchToTarget(dispatch => {
-            return {
-                login: () => dispatch(
-                    this.userInjectableActions.loginUser({ name: 'test' })
-                ),
-            };
-        })(this);
+        this.ngRedux.mapDispatchToTarget(dispatch => (
+            { login: () => dispatch(this.userInjectableActions.loginUser({ name: 'test' })) }
+        ))(this);
     }
 
     ngOnInit() {

@@ -53,9 +53,8 @@ describe('userAction', () => {
         BaseRequestOptions,
         MockBackend,
         provide(Http, {
-            useFactory: (backend: MockBackend, defaultOptions: BaseRequestOptions) => {
-                return new Http(backend, defaultOptions);
-            },
+            useFactory: (backend: MockBackend, defaultOptions: BaseRequestOptions) => (new Http(backend, defaultOptions)
+            ),
             deps: [MockBackend, BaseRequestOptions],
         }),
     ]);

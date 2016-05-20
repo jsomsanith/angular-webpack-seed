@@ -19,7 +19,7 @@ import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 /* redux related imports */
 import { provider } from 'ng2-redux';
 
-import AppComponent from './components/app/containers/app.component';
+import AppComponent from './feature1/app.container';
 import configureStore from './store/configureStore';
 
 import UserInjectableActions from './actions/userActions';

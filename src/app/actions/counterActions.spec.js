@@ -23,7 +23,6 @@ const mockStore = configureMockStore(middlewares);
 const expectedIncrementAction = { type: INCREMENT };
 
 describe('counterAction', () => {
-
     /**
      * Testing a classical synchronous action creator
      */

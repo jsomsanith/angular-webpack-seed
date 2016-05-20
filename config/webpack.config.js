@@ -16,8 +16,6 @@ const DIST_PATH = path.resolve(__dirname, '../dist');
 
 const env = process.env.NODE_ENV;
 
-console.info('test', env);
-
 
 function getDefaultConfig(options) {
     return {

@@ -44,18 +44,12 @@ function incrementRequest() {
 export function promiseAsyncIncrement() {
     return dispatch => {
         dispatch(incrementRequest());
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             setTimeout(() => {
                 resolve('OK');
             }, 1000);
-        }).then((value) => {
+        }).then(() => {
             dispatch(increment());
         });
     };
 }
-
-/**
- * TODO
- * Observable based action
- */
-
