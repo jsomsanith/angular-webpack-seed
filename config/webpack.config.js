@@ -41,9 +41,6 @@ function getDefaultConfig(options) {
                 'process.env.NODE_ENV': JSON.stringify(env),
             }),
         ],
-        babel: {
-            presets: ['es2015', 'angular2'],
-        },
         cache: true,
         devtool: options.devtool,
         debug: options.debug,
