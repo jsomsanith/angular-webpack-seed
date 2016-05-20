@@ -27,7 +27,7 @@ module.exports = function (config) {
             { pattern: './node_modules/@angular/**/*.js', included: false, watched: true },
 
             // tests
-            './config/test-env.js'
+            './config/test-env.js',
         ],
         exclude: [],
 
@@ -36,7 +36,7 @@ module.exports = function (config) {
 
         preprocessors: {
             './config/test-env.js': ['webpack'],
-            './src/**/*.js': ['webpack']
+            './src/**/*.js': ['webpack'],
         },
 
         reporters: ['progress', 'coverage'],
@@ -49,9 +49,9 @@ module.exports = function (config) {
 
         coverageReporter: {
             type: 'html',
-            dir: 'coverage/'
+            dir: 'coverage/',
         },
 
-        webpack: webpackConfig
-    })
+        webpack: webpackConfig,
+    });
 };

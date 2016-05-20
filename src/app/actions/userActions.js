@@ -1,7 +1,10 @@
 import { Injectable, Inject } from '@angular/core';
 import { Http } from '@angular/http';
+import 'rxjs/add/operator/map';
 
-import { LOGIN_USER_PENDING, LOGIN_USER_SUCCESS, LOGIN_USER_ERROR } from '../constants/userConstants';
+import {
+    LOGIN_USER_PENDING, LOGIN_USER_SUCCESS, LOGIN_USER_ERROR,
+} from '../constants/userConstants';
 
 /**
  * Injectable action classe
@@ -14,13 +17,19 @@ export default class UserInjectableActions {
     }
 
     loginUser(credentials) {
-        return (dispatch, getState) => {
+        return (dispatch) => {
             dispatch({ type: LOGIN_USER_PENDING });
-
-            this.http.post('/auth/login', credentials)
-                .toPromise()
-                .then(response => dispatch({ type: LOGIN_USER_SUCCESS, payload: response.json() }))
-                .catch(error => dispatch({ type: LOGIN_USER_ERROR, payload: error, error: true }));
+            return this.http.post('/auth/login', credentials)
+                .map((response) => response.json())
+                .subscribe(
+                    response => dispatch({ type: LOGIN_USER_SUCCESS, response }),
+                    error => {
+                        // TODO: need some sexyness
+                        const status = error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+                        const errMsg = error.message ? error.message : status;
+                        dispatch({ type: LOGIN_USER_ERROR, error: errMsg });
+                    }
+                );
         };
     }
 }

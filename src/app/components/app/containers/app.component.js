@@ -92,7 +92,9 @@ export default class AppComponent {
      */
     asyncIncrement = () => this.ngRedux.dispatch(counterActionCreator.asyncIncrement());
 
-    promiseAsyncIncrement = () => this.ngRedux.dispatch(counterActionCreator.promiseAsyncIncrement());
+    promiseAsyncIncrement = () => this.ngRedux.dispatch(
+        counterActionCreator.promiseAsyncIncrement()
+    );
 
     ngOnDestroy() {
         if (process.env.NODE_ENV === 'developpement') {
