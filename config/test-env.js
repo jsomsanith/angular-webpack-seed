@@ -13,3 +13,19 @@ setBaseTestProviders(TEST_BROWSER_DYNAMIC_PLATFORM_PROVIDERS, TEST_BROWSER_DYNAM
 // require all *.spec.js files
 var context = require.context('../src', true, /\.spec\.js$/);
 context.keys().forEach(context);
+
+// require all components for coverage
+const componentsContext = require.context('../src/app/actions/', true, /\.js$/);
+componentsContext.keys().forEach(componentsContext);
+
+// require all actions for coverage
+const actionsContext = require.context('../src/app/actions/', true, /\.js$/);
+actionsContext.keys().forEach(actionsContext);
+
+// require all reducers for coverage
+const reducersContext = require.context('../src/app/reducers/', true, /\.js$/);
+reducersContext.keys().forEach(reducersContext);
+
+// // require all feature-* for coverage
+const featuresContext = require.context('../src/app/features/', true, /\.js$/);
+featuresContext.keys().forEach(featuresContext);

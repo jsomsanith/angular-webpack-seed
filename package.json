@@ -18,7 +18,7 @@
     "serve:dev": "webpack-dev-server --config config/webpack.config.dev.js --progress --colors --open",
     "preserve:dist": "npm run clean:dist",
     "serve:dist": "webpack-dev-server --config config/webpack.config.prod.js --progress --colors --open --compress",
-    "test": "karma start",
+    "test": "NODE_ENV=test karma start",
     "test:auto": "karma start --auto",
     "lint": "npm run lint:es",
     "lint:es": "eslint --config .eslintrc src/app/**/*.js",

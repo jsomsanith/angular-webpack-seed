@@ -29,7 +29,9 @@ module.exports = function (config) {
             // tests
             './config/test-env.js',
         ],
-        exclude: [],
+        exclude: [
+            './src/app/store/configureStoreDev.js',
+        ],
 
         frameworks: ['jasmine'],
         browsers: ['PhantomJS'],

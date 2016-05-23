@@ -88,6 +88,7 @@ function addTestConfig(config) {
     };
     config.module.preLoaders.push({
         test: /\.js$/,
+        include: path.resolve('src/'),
         loader: 'isparta',
         exclude: [/node_modules/, /\.spec\.js$/],
     });

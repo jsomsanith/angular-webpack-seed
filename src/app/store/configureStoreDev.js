@@ -4,8 +4,9 @@ import createLogger from 'redux-logger';
 
 import rootReducer from '../reducers/index';
 
-const enhancers = [window.devToolsExtension()];
 
+console.info('ENV', process.env.NODE_ENV);
+const enhancers = [window.devToolsExtension()];
 
 const logger = createLogger();
 

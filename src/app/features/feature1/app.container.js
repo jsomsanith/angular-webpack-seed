@@ -20,8 +20,8 @@ import Counter from './counter.component';
 
 import { NgRedux } from 'ng2-redux';
 import { Observable } from 'rxjs';
-import * as counterActionCreator from '../actions/counterActions';
-import UserInjectableActions from '../actions/userActions';
+import * as counterActionCreator from '../../actions/counterActions';
+import UserInjectableActions from '../../actions/userActions';
 
 /**
  * Container component, shouldn't do anything else than bind value and action from store and pass
